@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'star_track'
+
+case ARGV[0]
+when "help"
+  StarTrack::Commands.help
+when "config"
+  StarTrack::Commands.config
+else
+  StarTrack::Commands.runner
+end
