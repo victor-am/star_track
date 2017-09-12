@@ -1,6 +1,9 @@
 # Star Track
 > Because manually typing your time tracking is for barbarians
 
+## What does it do?
+Creates a time tracking entry on your time tracker (currently only Freckle because I use Freckle) and fill it's description with data taken from you task manager (currently only Wunderlist because I use Wunderlist).
+
 ## How do I...?
 1. `gem install star_track`
 2. `touch ~/.star_track.yaml`
