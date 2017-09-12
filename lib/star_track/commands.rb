@@ -33,9 +33,8 @@ module StarTrack
 
       puts "=> Now creating entry on the time tracker...".colorize(:green)
       time_tracker.track(today_tasks)
-      puts ""
-
       puts "==> Entry created successfully!".colorize(:green)
+      puts ""
     end
   end
 end

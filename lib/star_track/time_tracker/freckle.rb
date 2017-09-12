@@ -16,7 +16,7 @@ module StarTrack
 
       def track(tasks)
         params = {
-          description: tasks.join(" - "),
+          description: tasks.join(" - ").gsub("#", " "),
           project_id:  @project_id,
           minutes:     billable_time,
           date:        Date.today.to_s,
