@@ -22,7 +22,11 @@ module StarTrack
           date:        Date.today.to_s,
         }
 
-        client.create_entry(params)
+        begin
+          client.create_entry(params)
+        rescue => error
+          abort "[ERROR] #{error.message}".colorize(:red)
+        end
       end
 
       private
