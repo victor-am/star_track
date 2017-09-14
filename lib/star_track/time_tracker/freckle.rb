@@ -25,7 +25,7 @@ module StarTrack
         begin
           client.create_entry(params)
         rescue => error
-          abort "[ERROR] #{error.message}".colorize(:red)
+          ErrorHandler.raise(error.message)
         end
       end
 
@@ -43,7 +43,7 @@ module StarTrack
 
       def validate_given_time!
         unless ARGV[0]
-          abort "[ERROR] Missing billable time parameter!".colorize(:red)
+          ErrorHandler.raise("[ERROR] Missing time parameter!")
         end
       end
     end

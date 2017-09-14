@@ -5,23 +5,28 @@ module StarTrack
       print "> star_track help   ".colorize(:green)
       puts "- pretty obvious, isn't it?"
 
-      print "> star_track config ".colorize(:green)
-      puts "- creates a new .star_track.yaml file at your user's root path (to be implemented)"
-
       print "> star_track hh:mm  ".colorize(:green)
       puts "- time tracks hh hours and mm minutes, ex: star_track 8:00"
       puts ""
     end
 
     def self.runner
-      task_manager = StarTrack::TaskManager::Wunderlist.new
-      time_tracker = StarTrack::TimeTracker::Freckle.new
+      config = YAML.load_file("#{ENV['HOME']}/.star_track.yaml")
 
+      task_manager_name = config["task_manager"]
+      time_tracker_name = config["time_tracker"]
+
+      ErrorHandler.raise_missing_config(:task_manager) unless task_manager_name
+      ErrorHandler.raise_missing_config(:time_tracker) unless time_tracker_name
+
+      task_manager = build_constant(TaskManager, task_manager_name).new
+      time_tracker = build_constant(TimeTracker, time_tracker_name).new
+
+      puts ""
       print "Task manager: ".colorize(:blue)
-      puts "Wunderlist"
-
+      puts task_manager_name.capitalize
       print "Time tracker: ".colorize(:blue)
-      puts "Freckle"
+      puts time_tracker_name.capitalize
       puts ""
 
       puts "=> Loading today tasks...".colorize(:green)
@@ -35,6 +40,11 @@ module StarTrack
       time_tracker.track(today_tasks)
       puts "==> Entry created successfully!".colorize(:green)
       puts ""
+    end
+
+    def self.build_constant(namespace, name)
+      class_name = name.split(/-|\s|_/).map(&:capitalize).join("")
+      const_get "#{namespace}::#{class_name}"
     end
   end
 end
