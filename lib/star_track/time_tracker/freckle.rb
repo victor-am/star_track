@@ -14,12 +14,12 @@ module StarTrack
         @client = ::Freckle::Client.new(token: @token)
       end
 
-      def track(tasks)
+      def track(tasks, date:)
         params = {
           description: tasks.join(" - ").gsub("#", " "),
           project_id:  @project_id,
           minutes:     billable_time,
-          date:        Date.today.to_s,
+          date:        date.to_s,
         }
 
         begin
@@ -43,7 +43,7 @@ module StarTrack
 
       def validate_given_time!
         unless ARGV[0]
-          ErrorHandler.raise("[ERROR] Missing time parameter!")
+          ErrorHandler.raise("[ERROR] Missing time parameter! Try 'star_track 8:00' for example.")
         end
       end
     end

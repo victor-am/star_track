@@ -1,3 +1,5 @@
+require 'optparse'
+
 module StarTrack
   class Commands
     def self.help
@@ -16,6 +18,16 @@ module StarTrack
       task_manager_name = config["task_manager"]
       time_tracker_name = config["time_tracker"]
 
+      options = {}
+      OptionParser.new do |opts|
+        opts.banner = "Usage: example.rb [options]"
+
+        help = "Specify a date, defaults to today, options: 'today', 'yesterday', '3 days ago', '2017-02-15'"
+        opts.on("-d", "--date", help) do |date|
+          options[:date] = date ? Date.parse(date) : Date.today
+        end
+      end.parse!
+
       ErrorHandler.raise_missing_config(:task_manager) unless task_manager_name
       ErrorHandler.raise_missing_config(:time_tracker) unless time_tracker_name
 
@@ -30,14 +42,14 @@ module StarTrack
       puts ""
 
       puts "=> Loading today tasks...".colorize(:green)
-      today_tasks = task_manager.today_tasks
+      tasks = task_manager.tasks_from(options[:date])
 
       puts "==> Here is what you did today:".colorize(:green)
-      today_tasks.each { |task| puts "- #{task}" }
+      tasks.each { |task| puts "- #{task}" }
       puts ""
 
       puts "=> Now creating entry on the time tracker...".colorize(:green)
-      time_tracker.track(today_tasks)
+      time_tracker.track(tasks, date: options[:date])
       puts "==> Entry created successfully!".colorize(:green)
       puts ""
     end
