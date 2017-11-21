@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = "star_track"
-  s.version       = "0.2.0"
+  s.version       = "0.2.1"
   s.authors       = ["victor-am"]
   s.summary       = "Because manual time tracking is for barbarians"
   s.homepage      = "https://github.com/victor-am/star_track"
