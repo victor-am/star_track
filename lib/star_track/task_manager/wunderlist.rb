@@ -22,7 +22,7 @@ module StarTrack
         @list ||= client.list(@list_name)
 
         @list.tasks(completed: true).select do |task|
-          Date.parse(task.completed_at) == Date.today
+          Time.parse(task.completed_at).to_date == Time.now.utc.to_date
         end.map(&:title)
       end
     end
